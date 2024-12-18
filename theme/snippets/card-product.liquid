@@ -15,6 +15,8 @@
       src="{{ card_product.variants.first.image | image_url: width: 480, height: 480 }}"
       alt="{{ card_product.title }}"
       class="image object-contain w-full h-full"
+      onmouseenter="onMouseEnter(this)"
+      onmouseleave="onMouseLeave(this)"
     >
 
     {% if card_product.compare_at_price > card_product.price %}
@@ -100,5 +102,21 @@
         saleBadge.style.visibility = 'hidden';
       }
     }
+  }
+
+  function onMouseEnter(element) {
+    const productJson = JSON.parse('{{ card_product | json }}');
+    const selectedVariant = productJson.variants.find((variant) => `${variant.id}` === element.id);
+    const productCard = element.closest('.card-product');
+    const image = productCard.querySelector('.image');
+    image.src = selectedVariant.featured_image.src.replace('.png', '-secondary.png');
+  }
+
+  function onMouseLeave(element) {
+    const productJson = JSON.parse('{{ card_product | json }}');
+    const selectedVariant = productJson.variants.find((variant) => `${variant.id}` === element.id);
+    const productCard = element.closest('.card-product');
+    const image = productCard.querySelector('.image');
+    image.src = selectedVariant.featured_image.src;
   }
 </script>
