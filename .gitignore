@@ -1,0 +1,5 @@
+# Ignore the node_modules directory, which contains all the dependencies installed by npm or yarn
+node_modules
+
+# Ignore the Shopify preset configuration file, which contain local project-specific settings
+shopify.presets.json
