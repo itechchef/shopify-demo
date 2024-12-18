@@ -46,7 +46,7 @@ jobs:
           SHOPIFY_FLAG_PATH: './theme'
           SHOPIFY_FLAG_THEME_ID: ${{ steps.branch-name.outputs.current_branch }}
         if: steps.check-theme-existence.outputs.THEME_COUNT == 0
-        run: echo "PREVIEW_URL=$(shopify theme push -u --json | jq '.theme.preview_url')" >> $GITHUB_OUTPUT
+        run: echo "PREVIEW_URL=$(shopify theme push -u --json --verbose | jq '.theme.preview_url')" >> $GITHUB_OUTPUT
       - name: Update the existing theme
         id: update-theme
         env:
