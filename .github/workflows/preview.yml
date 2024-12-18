@@ -64,7 +64,6 @@ jobs:
           result-encoding: string
           script: return ${{ steps.create-theme.outputs.PREVIEW_URL }}
       - name: Comment on PR (Preview Link)
-        if: steps.check-theme-existence.outputs.THEME_COUNT == 0
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: preview
