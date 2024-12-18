@@ -58,16 +58,30 @@ jobs:
         run: echo "PREVIEW_URL=$(shopify theme push --json | jq '.theme.preview_url')" >> $GITHUB_OUTPUT
       - name: Parse Theme URL
         id: parse-theme
+        if: steps.check-theme-existence.outputs.THEME_COUNT == 0
         uses: actions/github-script@v6
         with:
           result-encoding: string
           script: return ${{ steps.create-theme.outputs.PREVIEW_URL }}
+      - name: Parse Theme URL (Update)
+        id: parse-theme-update
+        if: steps.check-theme-existence.outputs.THEME_COUNT > 0
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: return ${{ steps.update-theme.outputs.PREVIEW_URL }}
       - name: Comment on PR (Preview Link)
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: preview
           message: |
             🟢 Preview Theme: ${{ steps.parse-theme.outputs.result }}
+      - name: Comment on PR (Preview Link)
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: preview
+          message: |
+            🟢 Preview Theme: ${{ steps.parse-theme-update.outputs.result }}
       - name: Comment on PR (Failure)
         if: ${{ failure() }}
         uses: thollander/actions-comment-pull-request@v2
